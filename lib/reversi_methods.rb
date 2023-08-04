@@ -69,11 +69,10 @@ end
 def turn!(board, target_pos, attack_stone_color, direction)
   return false if target_pos.out_of_board?
   return false if target_pos.stone_color(board) == attack_stone_color
-
+  return false if target_pos.stone_color(board) == 0
+  
   next_pos = target_pos.next_position(direction)
-  if target_pos.stone_color(board) == 0
-    false
-  elsif (next_pos.stone_color(board) == attack_stone_color) || turn!(board, next_pos, attack_stone_color, direction)
+  if (next_pos.stone_color(board) == attack_stone_color) || turn!(board, next_pos, attack_stone_color, direction)
     board[target_pos.col][target_pos.row] = attack_stone_color
     true
   else
@@ -94,7 +93,7 @@ def placeable?(board, attack_stone_color)
       return true if put_stone!(board, position.to_cellstr, attack_stone_color, false)
     end
   end
-  return false
+  false
 end
 
 def count_stone(board, stone_color)
